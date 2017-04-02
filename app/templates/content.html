@@ -19,12 +19,11 @@
                     <tr class="wiersz">
                         <td class="kol1">{{ osoby[x] }}</td>
                         <td class="kol2">{{ liczba_glosow_na_kandydata[x] }}</td>
-                        <td class="kol2">{{ liczba_glosow_na_kandydata[x] * 100 / suma_glosow }}</td>
+                        <td class="kol2">{{ "%0.2f" | format(liczba_glosow_na_kandydata[x] * 100 / suma_glosow)}}%</td>
 {#                        <td class="kol2">{{ 2kol }}</td>#}
 {#                        <td class="kol2">{{ 3kol }}</td>#}
                     </tr>
                 {% endfor %}
-                <a> WARTOSC {{ suma_kolumn[0] }}</a>
             </table>
         </td>
         <td id="wyniki_wykres" width="40%">
