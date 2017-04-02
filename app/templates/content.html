@@ -1,0 +1,34 @@
+{#{% for wiersz in dane %}#}
+{#    {% set numer = 0 %}#}
+{#    {% for wartosc in wiersz %}#}
+{#        {% set suma_kolumn[numer] = suma_kolumn[numer] + 1 %}#}
+{#        {% set numer = numer + 1 %}#}
+{#    {% endfor %}#}
+{#{% endfor %}#}
+
+<table id="wyniki" width="100%">
+    <tr>
+        <td id="wyniki_wiersz_tabeli">
+            <table id="wyniki_tabela">
+                <tr class="wiersz_glowny">
+                    <td class="kol1">Kandydat</td>
+                    <td class="kol2">Liczba głosów oddanych na kandydata</td>
+                    <td class="kol3">Procentowa liczba głosów</td>
+                </tr>
+                {% for x in range(12) %}
+                    <tr class="wiersz">
+                        <td class="kol1">{{ osoby[x] }}</td>
+                        <td class="kol2">{{ liczba_glosow_na_kandydata[x] }}</td>
+                        <td class="kol2">{{ liczba_glosow_na_kandydata[x] * 100 / suma_glosow }}</td>
+{#                        <td class="kol2">{{ 2kol }}</td>#}
+{#                        <td class="kol2">{{ 3kol }}</td>#}
+                    </tr>
+                {% endfor %}
+                <a> WARTOSC {{ suma_kolumn[0] }}</a>
+            </table>
+        </td>
+        <td id="wyniki_wykres" width="40%">
+            Tu będzie wykres
+        </td>
+    </tr>
+</table>

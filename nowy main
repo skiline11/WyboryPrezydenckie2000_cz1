@@ -1,0 +1,19 @@
+from jinja2 import Environment, PackageLoader
+from jinja2 import select_autoescape
+
+import numpy as np
+from csv import reader
+import csv
+env = Environment(
+    loader=PackageLoader('app', 'templates') # wskazujemy w jakim projekcie pythonowym (app) i jakim folderze (templates) znajduje się template
+    # autoescape=select_autoescape(['html', 'xml'])
+)
+
+template = env.get_template("template1.html")
+
+file = open('app/static/data/pkw2000.csv')
+reader = csv.reader(file)
+plik_do_przerobienia = list(reader)
+plik = np.array(plik_do_przerobienia)
+
+# print(plik[0])
