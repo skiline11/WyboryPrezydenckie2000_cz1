@@ -1,0 +1,91 @@
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+body{
+    background-color:#ffffff;
+}
+/*menu{*/
+/*display: inline-block;*/
+/*}*/
+
+/*div#menu_el{*/
+/*display: inline;*/
+/*float: left;*/
+/*}*/
+
+menu > ul{
+    border-top:1px solid #e7e7e7;
+    border-bottom:1px solid #e7e7e7;
+}
+
+menu > ul > li{
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+    list-style-type: none;
+}
+
+menu > ul > li:hover {
+    background-color: #d9d9d9;
+}
+
+tr.wiersz_glowny{
+    width: 60%;
+}
+
+td.kol1{
+    width: 40%;
+    text-align: center;
+}
+
+td.kol2{
+    width: 30%;
+    text-align: center;
+}
+
+td.kol3{
+    text-align: center;
+}
+
+footer {
+    width:100%;
+    font-size:11px;
+    color:#000000;
+    padding:0 0 0 0;
+    display:table;
+}
+
+footer > div {
+    display:table-cell;;
+    vertical-align:middle;
+    border-top:1px solid #e7e7e7;
+    padding-top:1%;
+    padding-bottom:1%;
+}
+
+footer > div:nth-child(1) {
+    width:10%;
+}
+
+footer > div:nth-child(2) {
+
+}
+
+footer > div:nth-child(2) img {
+}
+
+footer > div:nth-last-child(1) {
+    width:10%;
+    border-top:none;
+}
+
+footer > div:nth-last-child(2) {
+    text-align:right;
+}
+
+footer a {
+    text-decoration:none;
+    color:#000000;
+}

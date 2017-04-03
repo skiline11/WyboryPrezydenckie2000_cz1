@@ -1,86 +1,101 @@
 body{
-    background-color:#ffffff;
-}
-/*menu{*/
-/*display: inline-block;*/
-/*}*/
-
-/*div#menu_el{*/
-/*display: inline;*/
-/*float: left;*/
-/*}*/
-
-menu > ul{
-    border-top:1px solid #e7e7e7;
-    border-bottom:1px solid #e7e7e7;
+    background-color: azure ;
 }
 
-menu > ul > li{
+/* jesli jest więcej elementow to musimy zrobić
+ .jakasKlasa
+ i w divie napisać class="jakasKlasa" zamiast id!!!!!
+ */
+/* #-moze byc jeden taki element, ten element jest unikatowy */
+#container{
+    width:100%;
+}
+
+#logo{
+
+}
+
+#nav{
+    width:100%;
+    text-align: center;
+    border-bottom: solid 1px;
+}
+
+#nav > ul > li{
     display: inline-block;
     width: 19%;
-    text-align: center;
-    list-style-type: none;
 }
 
-menu > ul > li:hover {
-    background-color: #d9d9d9;
+#nav > ul > li:hover{
+    background-color: aqua;
 }
 
-tr.wiersz_glowny{
-    width: 60%;
-}
-
-td.kol1{
-    width: 40%;
-    text-align: center;
-}
-
-td.kol2{
-    width: 30%;
-    text-align: center;
-}
-
-td.kol3{
-    text-align: center;
-}
-
-footer {
+#contant{
     width:100%;
-    font-size:11px;
-    color:#000000;
-    padding:0 0 0 0;
-    display:table;
 }
 
-footer > div {
-    display:table-cell;;
-    vertical-align:middle;
-    border-top:1px solid #e7e7e7;
-    padding-top:1%;
-    padding-bottom:1%;
+#wyniki_kandydatow{
+    border-bottom: solid 1px;
+    border:solid 2px;
 }
 
-footer > div:nth-child(1) {
-    width:10%;
+#wyniki{
+    float:left;
+    text-align: center;
+    width:40%;
 }
 
-footer > div:nth-child(2) {
+#tabela_wyniki{
+    width: 100%;
+}
+
+.wiersz_glowny{
+    background-color: aquamarine;
+    height: 60px;
+    font-size: 25px;
+}
+
+.wiersz1{
+    background-color: white;
+    height: 60px;
+}
+
+.wiersz2{
+    background-color: lightgray;
+    height: 60px;
 
 }
 
-footer > div:nth-child(2) img {
+#pole_wykresu{
+    float:left;
+    height: 1000px;
+    width:60%;
 }
 
-footer > div:nth-last-child(1) {
-    width:10%;
-    border-top:none;
+#wykres{
+    width: 100%;
+    height: 1000px;
 }
 
-footer > div:nth-last-child(2) {
-    text-align:right;
+
+#statystyki_i_frekfencja{
 }
 
-footer a {
-    text-decoration:none;
-    color:#000000;
+#statystyki{
+    float:left;
+    width:50%;
+}
+
+#statystyki_tabela{
+    width: 100%;
+}
+
+#mapa{
+    float:left;
+    width:50%;
+    height: 1000px;
+}
+
+#footer{
+    clear:both;
 }

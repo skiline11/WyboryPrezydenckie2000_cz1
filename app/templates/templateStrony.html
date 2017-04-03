@@ -47,73 +47,18 @@
                         <td class="kol2">Liczba głosów oddanych na kandydata</td>
                         <td class="kol3">Procentowa liczba głosów</td>
                     </tr>
-                    
+                    {% for x in range(6) %}
                         <tr class="wiersz1">
-                            <td class="kol1">Dariusz Maciej GRABOWSKI</td>
-                            <td class="kol2">89002</td>
-                            <td class="kol2">0.51%</td>
+                            <td class="kol1">{{ osoby[2*x] }}</td>
+                            <td class="kol2">{{ liczba_glosow_na_kandydata[2*x] }}</td>
+                            <td class="kol2">{{ "%0.2f" | format(liczba_glosow_na_kandydata[2*x] * 100 / suma_glosow)}}%</td>
                         </tr>
                         <tr class="wiersz2">
-                            <td class="kol1">Piotr IKONOWICZ</td>
-                            <td class="kol2">38672</td>
-                            <td class="kol2">0.22%</td>
+                            <td class="kol1">{{ osoby[2*x + 1] }}</td>
+                            <td class="kol2">{{ liczba_glosow_na_kandydata[2*x + 1] }}</td>
+                            <td class="kol2">{{ "%0.2f" | format(liczba_glosow_na_kandydata[2*x + 1] * 100 / suma_glosow)}}%</td>
                         </tr>
-                    
-                        <tr class="wiersz1">
-                            <td class="kol1">Jarosław KALINOWSKI</td>
-                            <td class="kol2">1047949</td>
-                            <td class="kol2">5.95%</td>
-                        </tr>
-                        <tr class="wiersz2">
-                            <td class="kol1">Janusz KORWIN-MIKKE</td>
-                            <td class="kol2">252499</td>
-                            <td class="kol2">1.43%</td>
-                        </tr>
-                    
-                        <tr class="wiersz1">
-                            <td class="kol1">Marian KRZAKLEWSKI</td>
-                            <td class="kol2">2739621</td>
-                            <td class="kol2">15.57%</td>
-                        </tr>
-                        <tr class="wiersz2">
-                            <td class="kol1">Aleksander KWAŚNIEWSKI</td>
-                            <td class="kol2">9485224</td>
-                            <td class="kol2">53.90%</td>
-                        </tr>
-                    
-                        <tr class="wiersz1">
-                            <td class="kol1">Andrzej LEPPER</td>
-                            <td class="kol2">537570</td>
-                            <td class="kol2">3.05%</td>
-                        </tr>
-                        <tr class="wiersz2">
-                            <td class="kol1">Jan ŁOPUSZAŃSKI</td>
-                            <td class="kol2">139682</td>
-                            <td class="kol2">0.79%</td>
-                        </tr>
-                    
-                        <tr class="wiersz1">
-                            <td class="kol1">Andrzej Marian OLECHOWSKI</td>
-                            <td class="kol2">3044141</td>
-                            <td class="kol2">17.30%</td>
-                        </tr>
-                        <tr class="wiersz2">
-                            <td class="kol1">Bogdan PAWŁOWSKI</td>
-                            <td class="kol2">17164</td>
-                            <td class="kol2">0.10%</td>
-                        </tr>
-                    
-                        <tr class="wiersz1">
-                            <td class="kol1">Lech WAŁĘSA</td>
-                            <td class="kol2">178590</td>
-                            <td class="kol2">1.01%</td>
-                        </tr>
-                        <tr class="wiersz2">
-                            <td class="kol1">Tadeusz Adam WILECKI</td>
-                            <td class="kol2">28805</td>
-                            <td class="kol2">0.16%</td>
-                        </tr>
-                    
+                    {% endfor %}
                 </table>
             </div>
 
@@ -126,27 +71,27 @@
                 <table id="statystyki_tabela">
                     <tr class="wiersz1">
                         <td class="kol1">Liczba uprawnionych do glosowania</td>
-                        <td class="kol2">29122304</td>
+                        <td class="kol2">{{ statystyki[0] }}</td>
                     </tr>
                     <tr class="wiersz2">
                         <td class="kol1">Liczba wydanych kart do glosowania</td>
-                        <td class="kol2">17798791</td>
+                        <td class="kol2">{{ statystyki[1] }}</td>
                     </tr>
                     <tr class="wiersz1">
                         <td class="kol1">Liczba kart wyjetych z urny</td>
-                        <td class="kol2">17789231</td>
+                        <td class="kol2">{{ statystyki[2] }}</td>
                     </tr>
                     <tr class="wiersz2">
                         <td class="kol1">Liczba ważnych głosow</td>
-                        <td class="kol2">17598919</td>
+                        <td class="kol2">{{ statystyki[3] }}</td>
                     </tr>
                     <tr class="wiersz1">
                         <td class="kol1">Liczba niewaznych glosow</td>
-                        <td class="kol2">190312</td>
+                        <td class="kol2">{{ statystyki[4] }}</td>
                     </tr>
                     <tr class="wiersz2">
                         <td class="kol1">Frekwencja(%)</td>
-                        <td class="kol2">61.11738617933526</td>
+                        <td class="kol2">{{ statystyki[5] }}</td>
                     </tr>
                 </table>
             </div>
@@ -176,3 +121,4 @@
 </body>
 
 </html>
+

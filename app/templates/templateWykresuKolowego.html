@@ -1,0 +1,66 @@
+var wykres;
+var legend;
+var selected;
+
+var types = [
+    {% for x in range(12) %}
+        {
+            type: "{{ osoby[x] }}",
+            percent: {{ "%0.2f" | format(liczba_glosow_na_kandydata[x] * 100 / suma_glosow)}},
+            color: "#"+((1<<24)*Math.random()|0).toString(16)
+        },
+    {% endfor %}
+];
+
+function generateChartData() {
+    var chartData = [];
+    for (var i = 0; i < types.length; i++) {
+        if (i == selected) {
+            for (var x = 0; x < types[i].subs.length; x++) {
+                chartData.push({
+                    pulled: true
+                });
+            }
+        } else {
+            chartData.push({
+                type: types[i].type,
+                percent: types[i].percent,
+                color: types[i].color,
+                id: i
+            });
+        }
+    }
+    return chartData;
+}
+
+AmCharts.makeChart("wykres", {
+    "type": "pie",
+    "theme": "light",
+
+    "dataProvider": generateChartData(),
+    "labelText": "[[title]]: [[value]]",
+    "balloonText": "[[title]]: [[value]]",
+    "titleField": "type",
+    "valueField": "percent",
+    "outlineColor": "#FFFFFF",
+    "outlineAlpha": 0.8,
+    "outlineThickness": 2,
+    "colorField": "color",
+    "pulledField": "pulled",
+    "listeners": [{
+        "event": "clickSlice",
+        "method": function(event) {
+            var chartdiv = event.chart;
+            if (event.dataItem.dataContext.id != undefined) {
+                selected = event.dataItem.dataContext.id;
+            } else {
+                selected = undefined;
+            }
+            chartdiv.dataProvider = generateChartData();
+            chartdiv.validateData();
+        }
+    }],
+    "export": {
+        "enabled": true
+    }
+});
