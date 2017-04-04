@@ -6,37 +6,27 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../app/static/css/style.css" type = "text/css"/>
 
-    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script src="https://www.amcharts.com/lib/3/pie.js"></script>
     <script src="https://www.amcharts.com/lib/3/ammap.js"></script>
     <script src="https://www.amcharts.com/lib/3/maps/js/polandHigh.js"></script>
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
     <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
     <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
     <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
 
 </head>
 
 <body>
 
 <script type="text/javascript" src="../app/static/js/mapa.js"></script>
-<script type="text/javascript" src="../app/static/js/wykres.js"></script>
+<script type="text/javascript" src="../app/static/js/wykresKolumnowyPolska.js"></script>
 
 
 <div id="container">
 
-    <div id="logo">
-        <img src="../app/static/img/logo.jpg" class="img-responsive" style='width: 100%' alt="face">
-    </div>
-
-    <div id="nav">
-        <ul>
-            <li><p>Statystyki ogolne</p></li>
-            <li><p>Zwycięzki kandydat</p></li>
-            <li><p>Według rodzaju obwodu</p></li>
-            <li><p>W mieście i na wsi</p></li>
-            <li><p>Za granica</p></li>
-        </ul>
-    </div>
+    {% include "logoAndNavigation.html" %}
 
     <div id="content">
         <div id="wyniki_kandydatow">
@@ -63,47 +53,14 @@
             </div>
 
             <div id="pole_wykresu">
-                <div id="wykres">dlkasjdklajsldkjalsd</div>
-            </div>
-        </div>
-        <div id="statystyki_i_frekfencja">
-            <div id="statystyki">
-                <table id="statystyki_tabela">
-                    <tr class="wiersz1">
-                        <td class="kol1">Liczba uprawnionych do glosowania</td>
-                        <td class="kol2">{{ statystyki[0] }}</td>
-                    </tr>
-                    <tr class="wiersz2">
-                        <td class="kol1">Liczba wydanych kart do glosowania</td>
-                        <td class="kol2">{{ statystyki[1] }}</td>
-                    </tr>
-                    <tr class="wiersz1">
-                        <td class="kol1">Liczba kart wyjetych z urny</td>
-                        <td class="kol2">{{ statystyki[2] }}</td>
-                    </tr>
-                    <tr class="wiersz2">
-                        <td class="kol1">Liczba ważnych głosow</td>
-                        <td class="kol2">{{ statystyki[3] }}</td>
-                    </tr>
-                    <tr class="wiersz1">
-                        <td class="kol1">Liczba niewaznych glosow</td>
-                        <td class="kol2">{{ statystyki[4] }}</td>
-                    </tr>
-                    <tr class="wiersz2">
-                        <td class="kol1">Frekwencja(%)</td>
-                        <td class="kol2">{{ statystyki[5] }}</td>
-                    </tr>
-                </table>
-            </div>
-            <div id="mapa">
-                mapa
+                <div id="wykres_kolumnowy"></div>
             </div>
         </div>
     </div>
     <div id="footer">
         <div></div>
         <div>
-            <img src="/app/static/img/logo_pkw_footer.png" class="img-responsive" alt="footer"/>
+            <img src="../app/static/img/logo_pkw_footer.png" class="img-responsive" alt="footer"/>
         </div>
         <div>
             Copyright © 2017

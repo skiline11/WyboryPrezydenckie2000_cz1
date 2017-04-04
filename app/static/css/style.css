@@ -2,6 +2,10 @@ body{
     background-color: azure ;
 }
 
+
+
+/*Nie wiem dlaczego ale tu się wyprawia jakas magia*/
+
 /* jesli jest więcej elementow to musimy zrobić
  .jakasKlasa
  i w divie napisać class="jakasKlasa" zamiast id!!!!!
@@ -35,8 +39,9 @@ body{
 }
 
 #wyniki_kandydatow{
-    border-bottom: solid 1px;
-    border:solid 2px;
+    height: 900px;
+    vertical-align: middle;
+    padding: 20px;
 }
 
 #wyniki{
@@ -58,27 +63,34 @@ body{
 .wiersz1{
     background-color: white;
     height: 60px;
+    text-align: center;
 }
 
 .wiersz2{
     background-color: lightgray;
     height: 60px;
-
+    text-align: center;
 }
 
 #pole_wykresu{
     float:left;
-    height: 1000px;
     width:60%;
 }
 
-#wykres{
+#wykres_kolumnowy{
     width: 100%;
-    height: 1000px;
+    height: 900px;
+}
+
+.amcharts-export-menu-top-right {
+  top: 10px;
+  right: 0;
 }
 
 
 #statystyki_i_frekfencja{
+    height: 700px;
+    padding: 20px;
 }
 
 #statystyki{
@@ -93,9 +105,17 @@ body{
 #mapa{
     float:left;
     width:50%;
-    height: 1000px;
+    height: 700px;
 }
 
 #footer{
     clear:both;
+    width:100%;
+    /*display: inline-block;*/
+    align-content: center;
+}
+
+#footer > div{
+    /*display: inline-block;*/
+    vertical-align: center;
 }
