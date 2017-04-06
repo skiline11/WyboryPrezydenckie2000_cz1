@@ -20,9 +20,10 @@
 
 <body>
 
-<script type="text/javascript" src="../app/static/js/mapa.js"></script>
-<script type="text/javascript" src="../app/static/js/wykresKolumnowyPolska.js"></script>
-
+<script type="text/javascript" src="../app/static/js/wykresKolumnowy_{{ nazwa_wykresu }}.js"></script>
+{% if czy_mapka == 1 %}
+    <script type="text/javascript" src="../app/static/js_mapa/mapa.js"></script>
+{% endif %}
 
 <div id="container">
 
@@ -40,40 +41,111 @@
                     {% for x in range(6) %}
                         <tr class="wiersz1">
                             <td class="kol1">{{ osoby[2*x] }}</td>
-                            <td class="kol2">{{ liczba_glosow_na_kandydata[2*x] }}</td>
-                            <td class="kol2">{{ "%0.2f" | format(liczba_glosow_na_kandydata[2*x] * 100 / suma_glosow)}}%</td>
+                            <td class="kol2">{{ statystyki_kandydatow[2*x] }}</td>
+                            <td class="kol2">{{ "%0.2f" | format(statystyki_kandydatow[2*x] * 100 / suma_glosow)}}%</td>
                         </tr>
                         <tr class="wiersz2">
                             <td class="kol1">{{ osoby[2*x + 1] }}</td>
-                            <td class="kol2">{{ liczba_glosow_na_kandydata[2*x + 1] }}</td>
-                            <td class="kol2">{{ "%0.2f" | format(liczba_glosow_na_kandydata[2*x + 1] * 100 / suma_glosow)}}%</td>
+                            <td class="kol2">{{ statystyki_kandydatow[2*x + 1] }}</td>
+                            <td class="kol2">{{ "%0.2f" | format(statystyki_kandydatow[2*x + 1] * 100 / suma_glosow)}}%</td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
-
             <div id="pole_wykresu">
-                <div id="wykres_kolumnowy"></div>
+                <div id="{{ nazwa_wykresu }}" style="height: 900px"></div>
+                {#                                <div id="{{ nazwa_wykresu }}"></div>#}
             </div>
         </div>
+        {% if czy_mapka == 1 %}
+            <div id="statystyki_i_frekfencja">
+            <div id="statystyki">
+        {% else %}
+            <div id="statystyki_i_frekfencja" style="height:360px">
+        {% endif %}
+        <table id="statystyki_tabela">
+            <tr class="wiersz1">
+                <td class="kol1">Liczba uprawnionych do glosowania</td>
+                <td class="kol2">{{ statystyki_ogolne[1] }}</td>
+            </tr>
+            <tr class="wiersz2">
+                <td class="kol1">Liczba wydanych kart do glosowania</td>
+                <td class="kol2">{{ statystyki_ogolne[2] }}</td>
+            </tr>
+            <tr class="wiersz1">
+                <td class="kol1">Liczba kart wyjetych z urny</td>
+                <td class="kol2">{{ statystyki_ogolne[3] }}</td>
+            </tr>
+            <tr class="wiersz2">
+                <td class="kol1">Liczba ważnych głosow</td>
+                <td class="kol2">{{ statystyki_ogolne[4] }}</td>
+            </tr>
+            <tr class="wiersz1">
+                <td class="kol1">Liczba niewaznych glosow</td>
+                <td class="kol2">{{ statystyki_ogolne[5] }}</td>
+            </tr>
+            <tr class="wiersz2">
+                <td class="kol1">Frekwencja(%)</td>
+                <td class="kol2">{{ "%0.2f" | format(statystyki_ogolne[6]) }}</td>
+            </tr>
+        </table>
+        {% if czy_mapka == 1 %}
+            </div>
+            <div id="mapa">
+            </div>
+        {% endif %}
+        </div>
+        <div id="wyniki_kandydatow">
+            <table id="tabela_wyniki">
+                <tr class="wiersz2">
+                    <td>{{ typ_statystyk }}</td>
+                    <td>Liczba uprawnionych do głosowania</td>
+                    <td>Liczba wydanych kart do glosowania</td>
+                    <td>Liczba kart wyjetych z urny</td>
+                    <td>Liczba ważnych glosow</td>
+                    <td>Liczba niewaznych glosow</td>
+                    <td>Frekfencja</td>
+                </tr>
+                {% if typ_statystyk != "brak" %}
+                    {% set styl = 1 %}
+                    {% for key in statystyki_szczegolowe | sort(attribute=0) %}
+                        {% if styl == 1 %}
+                            {% set styl = 2 %}
+                <tr class="wiersz1">
+                        {% else %}
+                            {% set styl = 1 %}
+                <tr class="wiersz2">
+                        {% endif %}
+                    <td><a href = "statystyki_{{ typ_statystyk }}_{{ key }}.html">{{ key }}</a></td>
+                        {% for i in range(1, 6) %}
+                    <td>{{ statystyki_szczegolowe[key][i] }}</td>
+                        {% endfor %}
+                    <td>{{ statystyki_szczegolowe[key][6] }} %</td>
+                    {#                Dlaczego to nie działa ????#}
+                    {#                                <td>{{ "0.2f" | format(statystyki_szczegolowe[key][6]) }}</td>#}
+                </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+        </div>
+        <div id="footer">
+            <div></div>
+            <div>
+                <img src="../app/static/img/logo_pkw_footer.png" class="img-responsive" alt="footer"/>
+            </div>
+            <div>
+                Copyright © 2017
+            </div>
+            <div>
+                Państwowa Komisja Wyborcza, ul. Wiejska 10, 00-902 Warszawa, Tel. 22 695 25 44, Fax. 22 622 35 71<br /><br /><a href="../www.pkw.gov.pl/index.html" target="_blank">www.pkw.gov.pl</a>
+            </div>
+            <div>
+                wykonanie: Michał Radecki
+            </div>
+            <div></div>
+        </div>
     </div>
-    <div id="footer">
-        <div></div>
-        <div>
-            <img src="../app/static/img/logo_pkw_footer.png" class="img-responsive" alt="footer"/>
-        </div>
-        <div>
-            Copyright © 2017
-        </div>
-        <div>
-            Państwowa Komisja Wyborcza, ul. Wiejska 10, 00-902 Warszawa, Tel. 22 695 25 44, Fax. 22 622 35 71<br /><br /><a href="../www.pkw.gov.pl/index.html" target="_blank">www.pkw.gov.pl</a>
-        </div>
-        <div>
-            wykonanie: Michał Radecki
-        </div>
-        <div></div>
-    </div>
-</div>
 
 </body>
 

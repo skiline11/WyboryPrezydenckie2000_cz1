@@ -14,7 +14,6 @@ env = Environment(
 templateStrony = env.get_template("templateStrony.html")
 # templateStrony.globals['oblicz_polska'] = oblicz_polska()
 templateWykresuKolumnowego = env.get_template("templateWykresuKolumnowego.html")
-templateStatystykiOgolne = env.get_template("templateStatystykiOgolne.html")
 
 # Otwieram plik z danymi
 file = open('app/static/data/pkw2000.csv')
@@ -40,13 +39,19 @@ tablica_sum = [0 for i in range(13)]
 suma = 0
 
 
-def oblicz_liczbe_glosow(zasieg, nazwa_miejsca):
+def oblicz_liczbe_glosow(indeks_x, nazwa_miejsca):
     global tablica_sum
     tablica_sum = [0 for i in range(12)]
-    if zasieg == -1:
+
+    if indeks_x == -1:
         for y in range(1, 2495):
             for x in range(12):
                 tablica_sum[x] += int(plik[y][11 + x])
+    else:
+        for y in range(1, 2495):
+            if plik[y][indeks_x] == nazwa_miejsca:
+                for x in range(12):
+                    tablica_sum[x] += int(plik[y][11 + x])
     return tablica_sum
 
 
@@ -103,36 +108,6 @@ def get_statystyki_szczegolowe(indeks_x, nazwa, indeks_x2):
                 statystyki[plik[y][indeks_x2]] = [0, int(plik[y][6]), int(plik[y][7]), int(plik[y][8]), int(plik[y][9]), int(plik[y][10]), float(plik[y][7])*100.0/float(plik[y][6])]
     return statystyki
 
-with open("generated_output/output.html", "w") as out:
-    out.write(
-        templateStrony.render(
-            # number=42,
-            # string='abc',
-            # collection=list(range(1, 7))
-            osoby=osoby,
-            liczba_glosow_na_kandydata=oblicz_liczbe_glosow(-1, ''),
-            suma_glosow=oblicz_sume()
-        )
-    )
-
-with open("app/static/js/wykresKolumnowyPolska.js", "w") as out:
-    out.write(
-        templateWykresuKolumnowego.render(
-            osoby=osoby,
-            liczba_glosow_na_kandydata=oblicz_liczbe_glosow(-1, ''),
-            suma_glosow=oblicz_sume()
-        )
-    )
-
-with open("generated_output/statystykiOgolne.html", "w") as out:
-    out.write(
-        templateStatystykiOgolne.render(
-            statystyki_ogolne=get_statystyki_ogolne(-1, ''),
-            statystyki_szczegolowe=get_statystyki_szczegolowe(-1, 'a', 0),
-            typ_statystyk="Wojewodztwo",
-            czy_mapka=1
-        )
-    )
 wojewodztwa = []
 ost = ''
 ile_wojewodztw = 0
@@ -141,23 +116,137 @@ for y in range(1, 2495):
         ost = plik[y][0]
         ile_wojewodztw += 1
         wojewodztwa.append(ost)
+
+with open("generated_output/Polska.html", "w") as out:
+    out.write(
+        templateStrony.render(
+            osoby=osoby,
+            statystyki_kandydatow=oblicz_liczbe_glosow(-1, ''),
+            statystyki_ogolne=get_statystyki_ogolne(-1, ''),
+            statystyki_szczegolowe=get_statystyki_szczegolowe(-1, 'a', 0),
+            typ_statystyk="Wojewodztwo",
+            czy_mapka=1,
+            suma_glosow=oblicz_sume(),
+            nazwa_wykresu="Polska"
+        )
+    )
+
+with open("app/static/js/wykresKolumnowy_Polska.js", "w") as out:
+    out.write(
+        templateWykresuKolumnowego.render(
+            osoby=osoby,
+            liczba_glosow_na_kandydata=oblicz_liczbe_glosow(-1, ''),
+            suma_glosow=oblicz_sume(),
+            nazwa_wykresu="Polska"
+        )
+    )
+
 for x in range(ile_wojewodztw):
-    with open("generated_output/statystyki" + wojewodztwa[x] + ".html", "w") as out:
+    with open("generated_output/statystyki_Wojewodztwo_" + wojewodztwa[x] + ".html", "w") as out:
         out.write(
-            templateStatystykiOgolne.render(
+            templateStrony.render(
+                osoby=osoby,
+                statystyki_kandydatow=oblicz_liczbe_glosow(0, wojewodztwa[x]),
                 statystyki_ogolne=get_statystyki_ogolne(0, wojewodztwa[x]),
                 statystyki_szczegolowe=get_statystyki_szczegolowe(0, wojewodztwa[x], 1),
-                typ_statystyk="Okręg",
-                czy_mapka=0
+                typ_statystyk="Okreg",
+                czy_mapka=0,
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Wojewodztwo_"+wojewodztwa[x]
+            )
+        )
+    with open("app/static/js/wykresKolumnowy_Wojewodztwo_" + wojewodztwa[x] + ".js", "w") as out:
+        out.write(
+            templateWykresuKolumnowego.render(
+                osoby=osoby,
+                liczba_glosow_na_kandydata=oblicz_liczbe_glosow(0, wojewodztwa[x]),
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Wojewodztwo_"+wojewodztwa[x]
+            )
+        )
+
+okregi = []
+ost = ''
+ile_okregow = 0
+for y in range(1, 2495):
+    if plik[y][1] != ost:
+        ost = plik[y][1]
+        ile_okregow += 1
+        okregi.append(ost)
+for x in range(ile_okregow):
+    with open("generated_output/statystyki_Okreg_" + okregi[x] + ".html", "w") as out:
+        out.write(
+            templateStrony.render(
+                osoby=osoby,
+                statystyki_kandydatow=oblicz_liczbe_glosow(1, okregi[x]),
+                statystyki_ogolne=get_statystyki_ogolne(1, okregi[x]),
+                statystyki_szczegolowe=get_statystyki_szczegolowe(1, okregi[x], 4),
+                typ_statystyk="Powiat",
+                czy_mapka=0,
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Okreg_" + okregi[x]
+            )
+        )
+    with open("app/static/js/wykresKolumnowy_Okreg_" + okregi[x] + ".js", "w") as out:
+        out.write(
+            templateWykresuKolumnowego.render(
+                osoby=osoby,
+                liczba_glosow_na_kandydata=oblicz_liczbe_glosow(1, okregi[x]),
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Okreg_"+okregi[x]
+            )
+        )
+
+powiaty = []
+ost = ''
+ile_powiatow = 0
+for y in range(1, 2495):
+    if plik[y][4] != ost:
+        ost = plik[y][4]
+        ile_powiatow += 1
+        powiaty.append(ost)
+for x in range(ile_powiatow):
+    with open("generated_output/statystyki_Powiat_" + powiaty[x] + ".html", "w") as out:
+        out.write(
+            templateStrony.render(
+                osoby=osoby,
+                statystyki_kandydatow=oblicz_liczbe_glosow(4, powiaty[x]),
+                statystyki_ogolne=get_statystyki_ogolne(4, powiaty[x]),
+                statystyki_szczegolowe=get_statystyki_szczegolowe(4, powiaty[x], 3),
+                typ_statystyk="Gmina",
+                czy_mapka=0,
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Powiat_" + powiaty[x]
+            )
+        )
+    with open("app/static/js/wykresKolumnowy_Powiat_" + powiaty[x] + ".js", "w") as out:
+        out.write(
+            templateWykresuKolumnowego.render(
+                osoby=osoby,
+                liczba_glosow_na_kandydata=oblicz_liczbe_glosow(4, powiaty[x]),
+                suma_glosow=oblicz_sume(),
+                nazwa_wykresu="Powiat_"+powiaty[x]
             )
         )
 
 
-# with open("generated_output/statystykiMAZOWIECKIE.html", "w") as out:
-#     out.write(
-#         templateStatystykiOgolne.render(
-#             statystyki_ogolne=get_statystyki_ogolne(0, 'MAZOWIECKIE'),
-#             statystyki_szczegolowe=get_statystyki_szczegolowe(0, 'MAZOWIECKIE', 1),
-#             typ_statystyk="Okręg"
+
+
+## To zrobię puźniej bo szkoda mi czasu na czekanie na renderowanie stron :-)
+# gminy = []
+# ost = ''
+# ile_gmin = 0
+# for y in range(1, 2495):
+#     if plik[y][3] != ost:
+#         ost = plik[y][3]
+#         ile_gmin += 1
+#         gminy.append(ost)
+# for x in range(ile_powiatow):
+#     with open("generated_output/statystyki_Gmina_" + gminy[x] + ".html", "w") as out:
+#         out.write(
+#             templateStatystykiOgolne.render(
+#                 statystyki_ogolne=get_statystyki_ogolne(3, powiaty[x]),
+#                 typ_statystyk="brak",
+#                 czy_mapka=0
+#             )
 #         )
-#     )
