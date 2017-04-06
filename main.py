@@ -14,7 +14,7 @@ env = Environment(
 templateStrony = env.get_template("templateStrony.html")
 # templateStrony.globals['oblicz_polska'] = oblicz_polska()
 templateWykresuKolumnowego = env.get_template("templateWykresuKolumnowego.html")
-templateStatystyki = env.get_template("templateStatystyki.html")
+templateStatystykiOgolne = env.get_template("templateStatystykiOgolne.html")
 
 # Otwieram plik z danymi
 file = open('app/static/data/pkw2000.csv')
@@ -66,21 +66,42 @@ def ilu_uprawnionych():
     return liczba
 
 
-def oblicz_statystyki():
-    ilu_uprawnionych = 0
-    ile_kart_wydanych = 0
-    ile_kart_wyjetych_z_urny = 0
-    ile_glosow_waznych = 0
+def get_statystyki_ogolne(indeks_x, nazwa):
+    # 0 - typ statystyk - tabelka
+    # 1 - uprawnionych do glosowania
+    # 2 - wydanych kart
+    # 3 - wyjetych kart
+    # 4 - waznych glosow
+    # 5 - niewaznych glosow
+    # 6 - frekfencja
+    uprawnionych = 0
+    wydanych_kart = 0
+    wyjetych_kart = 0
+    niewaznych_glosow = 0
+    waznych_glosow = 0
     for y in range(1, 2495):
-        ilu_uprawnionych += int(plik[y][6])
-        ile_kart_wydanych += int(plik[y][7])
-        ile_kart_wyjetych_z_urny += int(plik[y][8])
-        ile_glosow_waznych += int(plik[y][10])
-    ile_glosow_niewaznych = ile_kart_wyjetych_z_urny - ile_glosow_waznych
-    frekwencja = ile_kart_wydanych*100/ilu_uprawnionych
-    statystyki = [ilu_uprawnionych, ile_kart_wydanych, ile_kart_wyjetych_z_urny, ile_glosow_waznych, ile_glosow_niewaznych, frekwencja]
-    return statystyki
+        if indeks_x == -1 or plik[y][indeks_x] == nazwa:
+            uprawnionych += int(plik[y][6])
+            wydanych_kart += int(plik[y][7])
+            wyjetych_kart += int(plik[y][8])
+            niewaznych_glosow += int(plik[y][9])
+            waznych_glosow += int(plik[y][10])
+    frekwencja = wydanych_kart * 100 / uprawnionych
+    wynik = [nazwa, uprawnionych, wydanych_kart, wyjetych_kart, niewaznych_glosow, waznych_glosow, frekwencja]
+    return wynik
 
+
+def get_statystyki_szczegolowe(indeks_x, nazwa, indeks_x2):
+    statystyki = {}
+    for y in range(1, 2495):
+        if indeks_x == -1 or plik[y][indeks_x] == nazwa:
+            if plik[y][indeks_x2] in statystyki:
+                for a in range(5):
+                    statystyki[plik[y][indeks_x2]][a + 1] += int(plik[y][a + 6])
+                statystyki[plik[y][indeks_x2]][6] = float(statystyki[plik[y][indeks_x2]][2])*100.0/float(statystyki[plik[y][indeks_x2]][1])
+            else:
+                statystyki[plik[y][indeks_x2]] = [0, int(plik[y][6]), int(plik[y][7]), int(plik[y][8]), int(plik[y][9]), int(plik[y][10]), float(plik[y][7])*100.0/float(plik[y][6])]
+    return statystyki
 
 with open("generated_output/output.html", "w") as out:
     out.write(
@@ -90,9 +111,7 @@ with open("generated_output/output.html", "w") as out:
             # collection=list(range(1, 7))
             osoby=osoby,
             liczba_glosow_na_kandydata=oblicz_liczbe_glosow(-1, ''),
-            suma_glosow=oblicz_sume(),
-            uprawnieni=ilu_uprawnionych(),
-            statystyki=oblicz_statystyki(),
+            suma_glosow=oblicz_sume()
         )
     )
 
@@ -105,44 +124,40 @@ with open("app/static/js/wykresKolumnowyPolska.js", "w") as out:
         )
     )
 
-def get_statystyki_ogolne():
-    ostatnie = plik[1][0]
-    ile_uprawnionych = int(plik[1][6])
-    ile_wydanych_kart = int(plik[1][7])
-    ile_wyjetych_kart = int(plik[1][8])
-    ile_waznych_glosow = int(plik[1][9])
-    ile_niewaznych_glosow = int(plik[1][10])
-    frekwencja = 0
-    wojewodztwa = []
-    suma = [0 for i in range(7)]
-    for y in range(2, 2495):
-        if ostatnie != plik[y][0]:
-            frekwencja = ile_wydanych_kart*100/ile_uprawnionych
-            wojewodztwa.append([ostatnie, ile_uprawnionych, ile_wydanych_kart, ile_wyjetych_kart, ile_waznych_glosow, ile_niewaznych_glosow, frekwencja])
-            suma[1] += ile_uprawnionych
-            suma[2] += ile_wydanych_kart
-            suma[3] += ile_wyjetych_kart
-            suma[4] += ile_waznych_glosow
-            suma[5] += ile_niewaznych_glosow
-            ile_uprawnionych = 0
-            ile_wydanych_kart = 0
-            ile_wyjetych_kart = 0
-            ile_waznych_glosow = 0
-            ile_niewaznych_glosow = 0
-        ile_uprawnionych += int(plik[y][6])
-        ile_wydanych_kart += int(plik[y][7])
-        ile_wyjetych_kart += int(plik[y][8])
-        ile_niewaznych_glosow += int(plik[y][9])
-        ile_waznych_glosow += int(plik[y][10])
-        ostatnie = plik[y][0]
-    suma[6] = suma[2] * 100 / suma[1]
-    wyniki_wojewodztw = [suma, wojewodztwa]
-    return wyniki_wojewodztw
-
 with open("generated_output/statystykiOgolne.html", "w") as out:
     out.write(
-        templateStatystyki.render(
-            statystyki_ogolne=get_statystyki_ogolne(),
-            typ_statystyk="Wojewodztwo"
+        templateStatystykiOgolne.render(
+            statystyki_ogolne=get_statystyki_ogolne(-1, ''),
+            statystyki_szczegolowe=get_statystyki_szczegolowe(-1, 'a', 0),
+            typ_statystyk="Wojewodztwo",
+            czy_mapka=1
         )
     )
+wojewodztwa = []
+ost = ''
+ile_wojewodztw = 0
+for y in range(1, 2495):
+    if plik[y][0] != ost:
+        ost = plik[y][0]
+        ile_wojewodztw += 1
+        wojewodztwa.append(ost)
+for x in range(ile_wojewodztw):
+    with open("generated_output/statystyki" + wojewodztwa[x] + ".html", "w") as out:
+        out.write(
+            templateStatystykiOgolne.render(
+                statystyki_ogolne=get_statystyki_ogolne(0, wojewodztwa[x]),
+                statystyki_szczegolowe=get_statystyki_szczegolowe(0, wojewodztwa[x], 1),
+                typ_statystyk="Okręg",
+                czy_mapka=0
+            )
+        )
+
+
+# with open("generated_output/statystykiMAZOWIECKIE.html", "w") as out:
+#     out.write(
+#         templateStatystykiOgolne.render(
+#             statystyki_ogolne=get_statystyki_ogolne(0, 'MAZOWIECKIE'),
+#             statystyki_szczegolowe=get_statystyki_szczegolowe(0, 'MAZOWIECKIE', 1),
+#             typ_statystyk="Okręg"
+#         )
+#     )
