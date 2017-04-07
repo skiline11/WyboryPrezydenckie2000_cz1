@@ -92,6 +92,7 @@ def get_statystyki_ogolne(indeks_x, nazwa):
             niewaznych_glosow += int(plik[y][9])
             waznych_glosow += int(plik[y][10])
     frekwencja = wydanych_kart * 100 / uprawnionych
+    # print(type(frekwencja))
     wynik = [nazwa, uprawnionych, wydanych_kart, wyjetych_kart, niewaznych_glosow, waznych_glosow, frekwencja]
     return wynik
 
@@ -106,6 +107,8 @@ def get_statystyki_szczegolowe(indeks_x, nazwa, indeks_x2):
                 statystyki[plik[y][indeks_x2]][6] = float(statystyki[plik[y][indeks_x2]][2])*100.0/float(statystyki[plik[y][indeks_x2]][1])
             else:
                 statystyki[plik[y][indeks_x2]] = [0, int(plik[y][6]), int(plik[y][7]), int(plik[y][8]), int(plik[y][9]), int(plik[y][10]), float(plik[y][7])*100.0/float(plik[y][6])]
+            if not isinstance(statystyki[plik[y][indeks_x2]][6], float):
+                print("DALCZEGO TO NIE JEST TYPU FLOAT")
     return statystyki
 
 wojewodztwa = []

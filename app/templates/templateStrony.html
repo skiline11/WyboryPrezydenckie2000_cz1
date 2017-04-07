@@ -120,9 +120,13 @@
                         {% for i in range(1, 6) %}
                     <td>{{ statystyki_szczegolowe[key][i] }}</td>
                         {% endfor %}
-                    <td>{{ statystyki_szczegolowe[key][6] }} %</td>
+                    <td>{{ statystyki_szczegolowe[key][6]|round(2,'floor') }} %</td>
+{#                  <td class="kol2">{{ "%0.2f" | format(statystyki_ogolne[6]) }}</td>#}
+
                     {#                Dlaczego to nie działa ????#}
-                    {#                                <td>{{ "0.2f" | format(statystyki_szczegolowe[key][6]) }}</td>#}
+{#                        {% if(type(statystyki_szczegolowe[key][6]) != type(1.0) %}#}
+{#                    {{ statystyki_szczegolowe[key][6] | pprint }}#}
+{#                    <td>{{ "0.2f" | format(statystyki_szczegolowe[key][6] | float) }}</td>#}
                 </tr>
                     {% endfor %}
                 {% endif %}
